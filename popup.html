@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Street Easy, Address to Work</title>
+
+    <style>
+      body {
+        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+        font-size: 100%;
+        margin:0;
+        font-size: 12px;
+      }
+      
+      footer{
+        background-color: #ececec;
+        padding: 10px;
+        color: #929292;
+        width: 350px;
+        font-size: 11px;
+        text-align: center;
+        margin-top:20px;
+      }
+
+      .content-body{
+        padding:15px;
+      }
+
+      .input-label{
+        color: #0079ff;
+        margin-bottom:7px;
+      }
+
+      .input-text{
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid #cecece;
+        padding: 3px;
+        padding-left:0px;
+        padding-bottom: 6px;
+        outline:none;
+        box-sizing:border-box;
+        font-size: 12px;
+      }
+
+      .checkbox-text{
+        color:grey;
+      }
+
+      .input-checkbox{
+        margin-left:0px;
+        margin-top: 10px;
+      }
+
+      .checkbox-text{
+        padding-right:18px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="status"></div>
+    <img id="image-result" hidden>
+    
+
+
+    <div class="content-body">
+      <div class="input-label">Google Destination API Key</div>
+      <input type="text" class="input-text" id="apiKey"/><br/>
+
+      <br/><br/>
+      
+      <div class="input-label">Destination Address</div>
+      <input type="text" class="input-text" id="destinationAddress"/><br/>
+
+      <br/><br/>
+
+      <div class="input-label">Active Modes</div>
+      <input type="checkbox" class="input-checkbox" onclick="inputOnChange()"/>
+      <span class="checkbox-text">Driving</span>
+      
+      <input type="checkbox" class="input-checkbox"/>
+      <span class="checkbox-text">Walking</span>
+      
+      <input type="checkbox" class="input-checkbox"/>
+      <span class="checkbox-text">Bicycling</span>
+      
+      <input type="checkbox" class="input-checkbox"/>
+      <span class="checkbox-text">Transit</span>
+    </div>
+
+    <footer>Street Easy, Address to Work</footer>
+
+
+    <script src="popup.js"></script>
+  </body>
+</html>
