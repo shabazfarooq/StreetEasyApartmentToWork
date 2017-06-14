@@ -8,7 +8,7 @@ const google_ApiUrl = 'https://maps.googleapis.com/maps/api/directions/json';
 const currentUrlPath = window.location.pathname;
 
 // User editable (build popup.html to allow user to set these)
-let destinationAddress = '11 east 26th street ny ny';
+let destinationAddress = '';
 let google_ApiKey = '';
 
 let modesObject = {
@@ -111,7 +111,7 @@ function getApartmentAddressFromDomElement(apartmentListingDomElement){
     return dirtyAddress.replace(/#\w+/g, '');
   }
 
-  // Extract words after "in"
+  // Extract words after "in "
   function cleanCity(dirtyCity){
     return dirtyCity.replace(/[^]*(in )/g, '');
   }
@@ -127,8 +127,9 @@ function executeGoogleCallout(baseUrl, apiKey, origin, destination, modeObject, 
     origin = replaceSpaces(origin);
     destination = replaceSpaces(destination);
 
-    return `${baseUrl}?origin=${origin}&destination=${destination}&mode=${mode}&&key=${apiKey}`;
+    return `${baseUrl}?origin=${origin}&destination=${destination}&mode=${mode}&key=${apiKey}`;
 
+    // Replace spaces with pluses for URL compatibility
     function replaceSpaces(str){
       return str.split(' ').join('+');
     }
@@ -141,15 +142,15 @@ function executeGoogleCallout(baseUrl, apiKey, origin, destination, modeObject, 
         // Google response on address not found
         // JSON.parse(this.responseText).status == NOT_FOUND
         
-        let time;
+        let commuteTime;
         try{
-          time = JSON.parse(this.responseText).routes[0].legs[0].duration.text;
+          commuteTime = JSON.parse(this.responseText).routes[0].legs[0].duration.text;
         }
         catch(error){
-          time = ':(';
+          commuteTime = ':(';
         }
 
-        updateDomElementWithGoogleResponse(apartmentAddressDomElement, modeObject, time);
+        updateDomElementWithGoogleResponse(apartmentAddressDomElement, modeObject, commuteTime);
       }
     };
     
@@ -159,26 +160,31 @@ function executeGoogleCallout(baseUrl, apiKey, origin, destination, modeObject, 
 }
 
 function updateDomElementWithGoogleResponse(addressListingDomElement, modeObject, transitTime){
-  // Build primary div
-  let newDiv = document.createElement('div');
-  newDiv.className = 'details_info';
+  try{
+    // Build primary div
+    let newDiv = document.createElement('div');
+    newDiv.className = 'details_info';
 
-  // Build image
-  let newImage = document.createElement('img');
-  newImage.src = modeObject.imageUrl;
-  newImage.style.cssText = 'width: 38px; margin-top: 10px; padding-right:10px;';
+    // Build image
+    let newImage = document.createElement('img');
+    newImage.src = modeObject.imageUrl;
+    newImage.style.cssText = 'width: 38px; margin-top: 10px; padding-right:10px;';
 
-  // Time text
-  let newSpan = document.createElement('span');
-  newSpan.style.cssText = 'color: '+ modeObject.htmlColorCode +'; font-weight: bold; font-size: 16px; line-height: 43px; vertical-align: top;';
-  newSpan.textContent = transitTime;
+    // Time text
+    let newSpan = document.createElement('span');
+    newSpan.style.cssText = 'color: '+ modeObject.htmlColorCode +'; font-weight: bold; font-size: 16px; line-height: 43px; vertical-align: top;';
+    newSpan.textContent = transitTime;
 
-  // Build element
-  newDiv.appendChild(newImage);
-  newDiv.appendChild(newSpan);
+    // Build element
+    newDiv.appendChild(newImage);
+    newDiv.appendChild(newSpan);
 
-  // Append new element
-  addressListingDomElement.getElementsByClassName('details row')[0].appendChild(newDiv);
+    // Append new element
+    addressListingDomElement.getElementsByClassName('details row')[0].appendChild(newDiv);
+  }
+  catch(error){
+    throw 'Unable to add transit time to DOM';
+  }
 }
 
 function buildDomElement(transitType, transitTime){
