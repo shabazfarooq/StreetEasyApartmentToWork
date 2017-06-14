@@ -5,8 +5,7 @@
 
 // Constants
 const google_ApiUrl = 'https://maps.googleapis.com/maps/api/directions/json';
-const domainUrl = 'http://streeteasy.com/';
-const currentUrl = window.location.href;
+const currentUrlPath = window.location.pathname;
 
 // User editable (build popup.html to allow user to set these)
 let destinationAddress = '11 east 26th street ny ny';
@@ -42,12 +41,11 @@ let modesObject = {
 init();
 
 function init(){
-  var forSalePage = domainUrl + 'for-sale';
-  if(currentUrl.startsWith(forSalePage)){
-
+  if(currentUrlPath.startsWith('/for-sale') || currentUrlPath.startsWith('/for-rent')){
     try{
       // Get apartment listings array
       let apartmentListingDomElements = getApartmentListingsDomElements();
+      // alert(apartmentListingDomElements.length);
 
       for(let i=0; i<apartmentListingDomElements.length; i++){
         let currentApartmentDomElement = apartmentListingDomElements[i];
